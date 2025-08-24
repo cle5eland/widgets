@@ -65,7 +65,15 @@
     </div>
   </div>
   <script>
-    let time = 600; // 10 minutes in seconds
+    // Get minutes from URL parameter, default to 10
+    function getMinutesFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      const min = parseInt(params.get('minutes'), 10);
+      return (isNaN(min) || min <= 0) ? 10 : min;
+    }
+
+    let minutes = getMinutesFromURL();
+    let time = minutes * 60;
     let interval = null;
     const timerEl = document.getElementById('timer');
     const startBtn = document.getElementById('startBtn');
@@ -100,7 +108,8 @@
 
     function resetTimer() {
       stopTimer();
-      time = 600;
+      minutes = getMinutesFromURL();
+      time = minutes * 60;
       updateTimer();
     }
 
