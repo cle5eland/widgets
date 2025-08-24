@@ -1,4 +1,19 @@
 // Get minutes and seconds from URL parameters, default to 10 minutes
+// Get background color from URL parameter and set it
+function setBackgroundFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  let bg = params.get('bg');
+  if (bg) {
+    // Ensure it starts with # and is a valid hex
+    if (!bg.startsWith('#')) bg = '#' + bg;
+    if (/^#[0-9a-fA-F]{6}$/.test(bg)) {
+      document.body.style.background = bg;
+    }
+  }
+  // If not provided or invalid, use default from CSS
+}
+
+setBackgroundFromURL();
 function getDurationFromURL() {
   const params = new URLSearchParams(window.location.search);
   const min = parseInt(params.get('minutes'), 10);
