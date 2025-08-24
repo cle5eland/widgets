@@ -1,12 +1,22 @@
-// Get minutes from URL parameter, default to 10
-function getMinutesFromURL() {
+// Get minutes and seconds from URL parameters, default to 10 minutes
+function getDurationFromURL() {
   const params = new URLSearchParams(window.location.search);
   const min = parseInt(params.get('minutes'), 10);
-  return (isNaN(min) || min <= 0) ? 10 : min;
+  const sec = parseInt(params.get('seconds'), 10);
+  let totalSeconds = 0;
+  if (!isNaN(min) && min > 0) {
+    totalSeconds += min * 60;
+  }
+  if (!isNaN(sec) && sec > 0) {
+    totalSeconds += sec;
+  }
+  if (totalSeconds === 0) {
+    totalSeconds = 10 * 60;
+  }
+  return totalSeconds;
 }
 
-let minutes = getMinutesFromURL();
-let time = minutes * 60;
+let time = getDurationFromURL();
 let interval = null;
 const timerEl = document.getElementById('timer');
 const startBtn = document.getElementById('startBtn');
@@ -41,8 +51,7 @@ function stopTimer() {
 
 function resetTimer() {
   stopTimer();
-  minutes = getMinutesFromURL();
-  time = minutes * 60;
+  time = getDurationFromURL();
   updateTimer();
 }
 
