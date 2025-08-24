@@ -12,17 +12,20 @@ body {
   background: #23272f;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-  padding: 18px 16px;
+  padding: 4vw 3vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 180px;
+  min-width: 40vw;
+  max-width: 90vw;
+  width: 100%;
+  box-sizing: border-box;
 }
 #timer {
-  font-size: 2em;
+  font-size: 6vw;
   font-family: monospace;
-  margin-bottom: 16px;
-  letter-spacing: 1px;
+  margin-bottom: 3vw;
+  letter-spacing: 0.5vw;
   color: #00e676;
   text-shadow: 0 1px 4px #000a;
 }
@@ -31,9 +34,9 @@ body {
   color: #f1f1f1;
   border: none;
   border-radius: 6px;
-  padding: 6px 12px;
-  margin: 0 4px;
-  font-size: 1em;
+  padding: 1vw 2vw;
+  margin: 0 1vw;
+  font-size: 2vw;
   cursor: pointer;
   transition: background 0.2s;
   box-shadow: 0 1px 4px #0003;
@@ -45,5 +48,22 @@ body {
 .btn-row {
   display: flex;
   justify-content: center;
-  gap: 4px;
+  gap: 1vw;
+}
+@media (max-width: 500px) {
+  .timer-container {
+    min-width: 90vw;
+    padding: 6vw 2vw;
+  }
+  #timer {
+    font-size: 10vw;
+    margin-bottom: 5vw;
+  }
+  .timer-btn {
+    font-size: 4vw;
+    padding: 2vw 4vw;
+  }
+  .btn-row {
+    gap: 2vw;
+  }
 }
