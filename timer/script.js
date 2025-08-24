@@ -38,6 +38,7 @@ function startTimer() {
     } else {
       clearInterval(interval);
       interval = null;
+      playDing();
     }
   }, 1000);
 }
@@ -58,4 +59,24 @@ function resetTimer() {
 startBtn.addEventListener('click', startTimer);
 stopBtn.addEventListener('click', stopTimer);
 resetBtn.addEventListener('click', resetTimer);
+
+// Play a simple ding sound when timer ends
+function playDing() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 880;
+    gain.gain.value = 0.2;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.4);
+    osc.onended = () => ctx.close();
+  } catch (e) {
+    // Ignore errors (e.g., autoplay restrictions)
+  }
+}
+
 updateTimer();
