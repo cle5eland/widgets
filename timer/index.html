@@ -3,57 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>10 Minute Timer</title>
-  <style>
-    body {
-      background: #181a20;
-      color: #f1f1f1;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .timer-container {
-      background: #23272f;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-      padding: 40px 32px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 300px;
-    }
-    #timer {
-      font-size: 3em;
-      font-family: monospace;
-      margin-bottom: 32px;
-      letter-spacing: 2px;
-      color: #00e676;
-      text-shadow: 0 2px 8px #000a;
-    }
-    .timer-btn {
-      background: #282c34;
-      color: #f1f1f1;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 24px;
-      margin: 0 8px;
-      font-size: 1.1em;
-      cursor: pointer;
-      transition: background 0.2s;
-      box-shadow: 0 2px 8px #0004;
-    }
-    .timer-btn:hover {
-      background: #00e676;
-      color: #23272f;
-    }
-    .btn-row {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="timer-container">
@@ -64,59 +14,6 @@
       <button id="resetBtn" class="timer-btn">Reset</button>
     </div>
   </div>
-  <script>
-    // Get minutes from URL parameter, default to 10
-    function getMinutesFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      const min = parseInt(params.get('minutes'), 10);
-      return (isNaN(min) || min <= 0) ? 10 : min;
-    }
-
-    let minutes = getMinutesFromURL();
-    let time = minutes * 60;
-    let interval = null;
-    const timerEl = document.getElementById('timer');
-    const startBtn = document.getElementById('startBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const resetBtn = document.getElementById('resetBtn');
-
-    function updateTimer() {
-      const min = Math.floor(time / 60);
-      const sec = time % 60;
-      timerEl.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
-    }
-
-    function startTimer() {
-      if (interval) return;
-      interval = setInterval(() => {
-        if (time > 0) {
-          time--;
-          updateTimer();
-        } else {
-          clearInterval(interval);
-          interval = null;
-        }
-      }, 1000);
-    }
-
-    function stopTimer() {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
-    }
-
-    function resetTimer() {
-      stopTimer();
-      minutes = getMinutesFromURL();
-      time = minutes * 60;
-      updateTimer();
-    }
-
-    startBtn.addEventListener('click', startTimer);
-    stopBtn.addEventListener('click', stopTimer);
-    resetBtn.addEventListener('click', resetTimer);
-    updateTimer();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
