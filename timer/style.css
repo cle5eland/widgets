@@ -1,6 +1,7 @@
 body {
-  background: #202020; /* Notion background color */
+  background: #202020; /* Notion background color -- this one.*/
   /* darker notion background: #191919 */
+  /* https://rgb.to/rgb/24,24,24 */
   color: #f1f1f1;
   font-family: 'Segoe UI', Arial, sans-serif;
   display: flex;
