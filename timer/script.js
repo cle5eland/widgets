@@ -31,43 +31,63 @@ function getDurationFromURL() {
   return totalSeconds;
 }
 
-let time = getDurationFromURL();
+
+let initialDuration = getDurationFromURL();
+let remainingSeconds = initialDuration;
 let interval = null;
+let endTimestamp = null;
 const timerEl = document.getElementById('timer');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const resetBtn = document.getElementById('resetBtn');
 
 function updateTimer() {
-  const min = Math.floor(time / 60);
-  const sec = time % 60;
+  let displaySeconds = remainingSeconds;
+  if (endTimestamp) {
+    const now = Date.now();
+    displaySeconds = Math.max(0, Math.round((endTimestamp - now) / 1000));
+    remainingSeconds = displaySeconds;
+  }
+  const min = Math.floor(displaySeconds / 60);
+  const sec = displaySeconds % 60;
   timerEl.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+}
+
+function tick() {
+  updateTimer();
+  if (remainingSeconds <= 0) {
+    stopTimer();
+    playDing();
+  }
 }
 
 function startTimer() {
   if (interval) return;
-  interval = setInterval(() => {
-    if (time > 0) {
-      time--;
-      updateTimer();
-    } else {
-      clearInterval(interval);
-      interval = null;
-      playDing();
-    }
-  }, 1000);
+  if (!endTimestamp) {
+    endTimestamp = Date.now() + remainingSeconds * 1000;
+  }
+  interval = setInterval(tick, 250); // 4x/sec for accuracy
+  tick();
 }
 
 function stopTimer() {
   if (interval) {
     clearInterval(interval);
     interval = null;
+    // Update remainingSeconds based on current time
+    if (endTimestamp) {
+      const now = Date.now();
+      remainingSeconds = Math.max(0, Math.round((endTimestamp - now) / 1000));
+      endTimestamp = null;
+    }
   }
 }
 
 function resetTimer() {
   stopTimer();
-  time = getDurationFromURL();
+  initialDuration = getDurationFromURL();
+  remainingSeconds = initialDuration;
+  endTimestamp = null;
   updateTimer();
 }
 
@@ -75,7 +95,6 @@ startBtn.addEventListener('click', startTimer);
 stopBtn.addEventListener('click', stopTimer);
 resetBtn.addEventListener('click', resetTimer);
 
-// Play a simple ding sound when timer ends
 function playDing() {
   const audio = new Audio('assets/ding.wav');
   audio.play();
